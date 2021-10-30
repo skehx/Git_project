@@ -1,0 +1,100 @@
+creacion de tablas
+--------------------------------------------
+
+CREATE table cliente (
+codigo_clie int,
+nombre_clie varchar (30),
+direccion_clie VARCHAR (50),
+ciudad_clie varchar (40),
+CONSTRAINT pk_cc PRIMARY key (codigo_clie)
+ );
+ 
+CREATE TABLE  producto (
+codigo_prod int,
+nombre_prod varchar (50),
+CONSTRAINT pk_cp PRIMARY key (codigo_prod)
+  );
+  
+CREATE table ventas (
+numero_factura int,
+fecha_ventas DATE,
+codigo_clie1 int,
+CONSTRAINT pk_cf primary key (numero_factura),
+CONSTRAINT fk_fclie1 FOREIGN key (codigo_clie1) REFERENCES cliente (codigo_clie)
+  );
+
+create table item_ventas (
+cantidad_item int,
+precio_item float,
+numero_factura1 int,
+codigo_prod1 int,
+CONSTRAINT fk_ffac1 FOREIGN key (numero_factura1) REFERENCES ventas (numero_factura),
+CONSTRAINT fk_fprod1 FOREIGN key (codigo_prod1) REFERENCES producto (codigo_prod)
+
+  );
+----------------------------------------------------------------------------
+inserts
+insert into cliente values (1,'martin','calle rose 34-35','popayan');
+insert into cliente values (2,'sara','calle nick 23-74','popayan');
+insert into cliente values (3,'ram','cra la rum 34-50b','timbio');
+insert into cliente values (4,'raul','calle 13 56-106','timbio');
+insert into cliente values (5,'pablo','calle 37 sur58-107','bogota');
+insert into cliente values (6,'marla','calle 20 n36-90','medellin');
+
+insert into producto VALUES (1,'arroz');
+insert into producto VALUES (2,'peras');
+insert into producto VALUES (3,'coca-cola');
+insert into producto VALUES (4,'papitas');
+insert into producto VALUES (5,'gomas');
+insert into producto VALUES (6,'aceite');
+
+insert into ventas VALUES (1,'2021-09-12',1);
+insert into ventas VALUES (2,'2021-09-1',2);
+insert into ventas VALUES (3,'2021-08-9',3);
+insert into ventas VALUES (4,'2021-09-3',4);
+insert into ventas VALUES (5,'2021-07-27',5);
+insert into ventas VALUES (6,'2021-10-31',6);
+
+insert into item_ventas values (2,2500,1,1);
+insert into item_ventas values (5,900,2,2);
+insert into item_ventas values (1,3500,3,3);
+insert into item_ventas values (3,3000,4,4);
+insert into item_ventas values (7,2000,5,5);
+insert into item_ventas values (2,4000,6,6);
+----------------------------------------------------------------------------
+select de nombre y la dirección de los clientes que viven en la ciudad de Popayán
+
+SELECT nombre_clie,direccion_clie from cliente
+where ciudad_clie='popayan'
+---------------------------------------------------------------------------
+select de nombre, Dirección y Ciudad de los clientes que viven en la
+Ciudad de Popayán o de Timbio
+
+SELECT nombre_clie,direccion_clie,ciudad_clie from cliente
+where ciudad_clie='popayan' or ciudad_clie='timbio'
+
+
+SELECT numero_factura1,codigo_prod1, (precio_item * cantidad_item) as
+Total FROM item_ventas
+----------------------------------------------------------------------------
+update 
+
+update producto set nombre_prod='salchichas'
+where codigo_prod=5
+----------------------------------------------------------------------------
+update item_ventas set precio_item='3500'
+where numero_factura1=5
+
+----------------------------------------------------------------------------
+select
+ 
+select * from producto
+select * from item_ventas
+
+select nombre_prod,precio_item,numero_factura1 FROM producto, item_ventas
+where nombre_prod='salchichas' and numero_factura1=5
+----------------------------------------------------------------------------
+delete 
+
+delete from item_ventas
+WHERE precio_item='4000'
